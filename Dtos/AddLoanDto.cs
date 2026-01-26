@@ -1,21 +1,23 @@
-namespace LoanAPI.Models;
+using System.ComponentModel.DataAnnotations;
+
+namespace LoanAPI.Dtos;
 
 
-public class AddLoan {
 
-     public int Id {get;set;}
+public class AddLoanDto
+{
+    [Required]
     required public string Vendor {get; set;}
-
+    [Required]
     required public string Type {get;set;}
 
     public string? Description {get; set;}
-
+    [Required]
     required public decimal Amount {get;set;}
-
+    [Required]
     required public DateTime DueDate {get;set;}
-
+    [Required]
     required public bool Autopay {get;set;}
-
+    [Required]
     required public bool LoanFinished {get;set;}
-
 }
