@@ -43,7 +43,9 @@ public class LoanController : ControllerBase
 
         _logger.LogInformation("Data has been added to the database");
 
-        return Created("",result);
+        var response = _mapper.Map<LoanResponseDto>(result);
+
+        return Created("",response);
     }
 
     [HttpGet]
@@ -52,5 +54,25 @@ public class LoanController : ControllerBase
         var result = await _loanRepository.GetAllLoans();
 
         return Ok(result);
+    }
+
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<LoanResponseDto>> LoanById(int id)
+    {
+        var loan = await _loanRepository.GetLoanById(id);
+
+        var response = _mapper.Map<LoanResponseDto>(loan);
+
+        return Ok(response);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteLoan(int id)
+    {
+        await _loanRepository.DeleteLoanById(id);
+
+        return Ok(new {Response = new {Message = "Loan was successfully deleted"}});
+
     }
 }

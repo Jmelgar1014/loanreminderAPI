@@ -11,5 +11,7 @@ public class LoanProfile : Profile
     public LoanProfile()
     {
         CreateMap<AddLoanDto, AddLoan>();
+
+        CreateMap<AddLoan, LoanResponseDto>();
     }
 }

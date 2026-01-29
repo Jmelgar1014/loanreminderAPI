@@ -1,4 +1,5 @@
 using LoanAPI.DatabaseContext;
+using LoanAPI.Dtos;
 using LoanAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,5 +25,32 @@ public class LoanRepository : ILoanRepository
     public async Task<IEnumerable<AddLoan>> GetAllLoans()
     {
         return await _dbContext.Loans.ToListAsync();
+    }
+
+    public async Task<AddLoan> GetLoanById(int id)
+    {
+        var result = await _dbContext.Loans.FirstOrDefaultAsync(loanId => loanId.Id == id);
+
+        if(result == null)
+        {
+            throw new KeyNotFoundException($"Loan with ID {id} not found");
+        }
+
+        return result;
+
+    }
+
+    public async Task DeleteLoanById(int id)
+    {
+        var loan = await _dbContext.Loans.FirstOrDefaultAsync(loan => loan.Id == id);
+
+        if(loan == null)
+        {
+            throw new KeyNotFoundException($"Loan with id: {id} not found");
+        }
+
+        _dbContext.Loans.Remove(loan);
+
+        await _dbContext.SaveChangesAsync();
     }
 }

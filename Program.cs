@@ -1,5 +1,7 @@
+using LoanAPI.Profiles;
 using LoanAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<LoanAPI.DatabaseContext.LoanDbContext>(options => options.UseSqlite("Data Source = ./Database/loans.db"));
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
+builder.Services.AddAutoMapper(cfg =>{}, typeof(LoanProfile).Assembly);
 
 var app = builder.Build();
 
