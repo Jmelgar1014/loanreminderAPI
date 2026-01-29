@@ -1,0 +1,45 @@
+# Build results
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+Database/*.db
+Database/*.db-shm
+Database/*.db-wal
+
+# NuGet
+*.nupkg
+**/packages/*
+
+# Test results
+TestResults/
+*.trx
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+appsettings.Development.json
+*.env
+
+# Rider
+.idea/
+*.sln.iml
