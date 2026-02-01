@@ -8,10 +8,14 @@ public interface ILoanRepository
 {
     Task<AddLoan> AddLoanData(AddLoan loan);
 
-    Task<IEnumerable<AddLoan>> GetAllLoans();
+    Task<IEnumerable<AddLoan>> GetAllLoans(string? vendor, decimal? minAmount, decimal? maxAmount, bool? loanFinished);
 
     Task<AddLoan> GetLoanById(int id);
 
     Task DeleteLoanById(int id);
+
+    Task<AddLoan> UpdateLoan(int id, AddLoan updatedLoan);
+
+    Task<AddLoan> UpdateLoanPatch(int id, AddPartialUpdateDto updatedLoan);
 
 }

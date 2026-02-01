@@ -49,11 +49,13 @@ public class LoanController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AddLoan>>> GetAllLoanData()
+    public async Task<ActionResult<IEnumerable<LoanResponseDto>>> GetAllLoanData([FromQuery]string? vendor, [FromQuery]decimal? minAmount, [FromQuery]decimal? maxAmount, [FromQuery]bool? loanFinished)
     {
-        var result = await _loanRepository.GetAllLoans();
+        var result = await _loanRepository.GetAllLoans(vendor,minAmount,maxAmount,loanFinished);
 
-        return Ok(result);
+        var response = _mapper.Map<IEnumerable<LoanResponseDto>>(result);
+
+        return Ok(response);
     }
 
 
@@ -74,5 +76,27 @@ public class LoanController : ControllerBase
 
         return Ok(new {Response = new {Message = "Loan was successfully deleted"}});
 
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<LoanResponseDto>> UpdateLoanDetails(int id, AddLoanDto updatedLoanDetails)
+    {
+        var updatedInformation = _mapper.Map<AddLoan>(updatedLoanDetails);
+
+        var updatedRecord = await _loanRepository.UpdateLoan(id, updatedInformation);
+
+        var updateResponse = _mapper.Map<LoanResponseDto>(updatedRecord);
+
+        return Ok(updateResponse);
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<ActionResult<LoanResponseDto>> UpdateLoanDetailsPatch(int id, AddPartialUpdateDto updatedLoanDetailsPatch)
+    {
+        var updatedLoanDetails = await _loanRepository.UpdateLoanPatch(id, updatedLoanDetailsPatch);
+
+        var response = _mapper.Map<LoanResponseDto>(updatedLoanDetails);
+
+        return Ok(response);
     }
 }
