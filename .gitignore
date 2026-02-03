@@ -43,3 +43,6 @@ appsettings.Development.json
 # Rider
 .idea/
 *.sln.iml
+
+Logs/
+*.log

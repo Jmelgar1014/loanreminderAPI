@@ -29,7 +29,7 @@ public class LoanRepository : ILoanRepository
 
         if(!string.IsNullOrEmpty(vendor))
         {
-            query = query.Where(l => l.Vendor == vendor);
+            query = query.Where(l => l.Vendor.ToLower().Contains(vendor.ToLower()));
         }
 
         if(minAmount.HasValue)

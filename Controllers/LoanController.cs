@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LoanAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/loans")]
 public class LoanController : ControllerBase
 {
 
@@ -62,41 +62,60 @@ public class LoanController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<LoanResponseDto>> LoanById(int id)
     {
-        var loan = await _loanRepository.GetLoanById(id);
-
-        var response = _mapper.Map<LoanResponseDto>(loan);
-
-        return Ok(response);
+        try
+        {
+            var loan = await _loanRepository.GetLoanById(id);
+            var response = _mapper.Map<LoanResponseDto>(loan);
+            return Ok(response);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteLoan(int id)
     {
-        await _loanRepository.DeleteLoanById(id);
-
-        return Ok(new {Response = new {Message = "Loan was successfully deleted"}});
-
+        try
+        {
+            await _loanRepository.DeleteLoanById(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
     }
 
     [HttpPut("{id}")]
     public async Task<ActionResult<LoanResponseDto>> UpdateLoanDetails(int id, AddLoanDto updatedLoanDetails)
     {
-        var updatedInformation = _mapper.Map<AddLoan>(updatedLoanDetails);
-
-        var updatedRecord = await _loanRepository.UpdateLoan(id, updatedInformation);
-
-        var updateResponse = _mapper.Map<LoanResponseDto>(updatedRecord);
-
-        return Ok(updateResponse);
+        try
+        {
+            var updatedInformation = _mapper.Map<AddLoan>(updatedLoanDetails);
+            var updatedRecord = await _loanRepository.UpdateLoan(id, updatedInformation);
+            var updateResponse = _mapper.Map<LoanResponseDto>(updatedRecord);
+            return Ok(updateResponse);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
     }
 
     [HttpPatch("{id}")]
     public async Task<ActionResult<LoanResponseDto>> UpdateLoanDetailsPatch(int id, AddPartialUpdateDto updatedLoanDetailsPatch)
     {
-        var updatedLoanDetails = await _loanRepository.UpdateLoanPatch(id, updatedLoanDetailsPatch);
-
-        var response = _mapper.Map<LoanResponseDto>(updatedLoanDetails);
-
-        return Ok(response);
+        try
+        {
+            var updatedLoanDetails = await _loanRepository.UpdateLoanPatch(id, updatedLoanDetailsPatch);
+            var response = _mapper.Map<LoanResponseDto>(updatedLoanDetails);
+            return Ok(response);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
     }
 }
