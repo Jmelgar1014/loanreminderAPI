@@ -12,7 +12,7 @@ public class AddLoan {
 
     required public decimal Amount {get;set;}
 
-    required public DateTime DueDate {get;set;}
+    required public int DueDate {get;set;}
 
     required public bool Autopay {get;set;}
 
