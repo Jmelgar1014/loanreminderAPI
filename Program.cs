@@ -25,6 +25,13 @@ builder.Services.AddDbContext<LoanAPI.DatabaseContext.LoanDbContext>(options => 
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddAutoMapper(cfg =>{}, typeof(LoanProfile).Assembly);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyHeader();
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,6 +40,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
